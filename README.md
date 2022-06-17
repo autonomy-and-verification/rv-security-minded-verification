@@ -6,7 +6,7 @@ To run, first install LamaConv by following their instructions at (usually just 
 
 Run our code with:
 ```bash
--$ java Monitor <path_to_lamaconv>
+java Monitor <path_to_lamaconv>
 ```
 
 Everything can be customised (LTL property, LTL alphabet, log file name, etc.) by editing the file Monitor.java.
