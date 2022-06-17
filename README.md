@@ -3,6 +3,10 @@ Source code for the runtime verification of the simulation in the paper "Securit
 
 To run, first install LamaConv by following their instructions at (usually just downloading a zip and extracting it) https://www.isp.uni-luebeck.de/lamaconv
 
+Compile our code with:
+```bash
+javac Monitor.java
+```
 
 Run our code with:
 ```bash
