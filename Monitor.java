@@ -21,7 +21,7 @@ public class Monitor {
     public static String rv;
 
     public static void main(String[] args) throws IOException {
-		String ltl = "Fq";
+		String ltl = "Gp";
 		String ltlAlphabet = "[p,q]";
 		String log = "log.txt";
 		Monitor mon1 = new Monitor(args[0], ltl, ltlAlphabet);
@@ -71,7 +71,7 @@ public class Monitor {
 						else {
 							this.next("p");
 						}
-						if (this.currentVerdict == Verdict.True) {
+						if (this.currentVerdict == Verdict.False) {
 							System.out.println("At time "+time+" car with ID "+carId+" violated the property, current queue of "+value+" is greater than the limit of "+queueLimit+". Message ID"+messageId+" was sent by car ID "+carIdSender);
 							violations++;
 						}
