@@ -17,13 +17,17 @@ public class Monitor {
     private Verdict currentVerdict = Verdict.Unknown;
     private String ltl;
     private int violations = 0;
-    final int queueLimit = 2582;
+    private int events = 0;
+//    final int queueLimit = 2582;
+    final int queueLimit = 75;
     public static String rv;
 
     public static void main(String[] args) throws IOException {
 		String ltl = "Gp";
 		String ltlAlphabet = "[p,q]";
-		String log = "log.txt";
+//		String log = "log.txt";
+		String log = "log2(50 vehicles).txt";
+//		String log = "log3(2vehicles).txt";
 		Monitor mon1 = new Monitor(args[0], ltl, ltlAlphabet);
         //System.out.println(mon1);
 //        System.out.println("Verdict = "+mon1.next("p"));
@@ -59,6 +63,7 @@ public class Monitor {
 			String line;
 			while ((line = br.readLine()) != null) {
 				if (!line.isEmpty() && !line.trim().equals("") && !line.trim().equals("\n")) {
+					events++;
 					if (line.contains("pushed into the Queue")) {
 						String value = line.substring(line.indexOf("Queue(")+6, line.indexOf(")"));
 						String carId = line.substring(line.indexOf(": ")+2, line.indexOf(" : Message"));
@@ -81,6 +86,7 @@ public class Monitor {
 					}
 				}
 			}
+			System.out.println("The total number of events is: "+events);
 			System.out.println("The total number of violations is: "+violations);
 			br.close();
 		}
