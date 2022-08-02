@@ -18,16 +18,17 @@ public class Monitor {
     private String ltl;
     private int violations = 0;
     private int events = 0;
-//    final int queueLimit = 2582;
-    final int queueLimit = 75;
+    final int queueLimit = 125;
+//    final int queueLimit = 71;
     public static String rv;
 
     public static void main(String[] args) throws IOException {
 		String ltl = "Gp";
 		String ltlAlphabet = "[p,q]";
-//		String log = "log.txt";
-		String log = "log2(50 vehicles).txt";
-//		String log = "log3(2vehicles).txt";
+//		String log = "secp256-2cars.txt";
+//		String log = "secp256-50cars.txt";
+		String log = "secp192-2cars.txt";
+//		String log = "secp192-50cars.txt";
 		Monitor mon1 = new Monitor(args[0], ltl, ltlAlphabet);
         //System.out.println(mon1);
 //        System.out.println("Verdict = "+mon1.next("p"));
