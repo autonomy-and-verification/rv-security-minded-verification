@@ -10,10 +10,15 @@ javac Monitor.java
 
 Run our code with:
 ```bash
-java Monitor <path_to_lamaconv>
+java Monitor <path_to_lamaconv> LogFile QueueLimit
 ```
 
-Everything can be customised (LTL property, LTL alphabet, log file name, etc.) by editing the file Monitor.java.
+Example:
+```bash
+java Monitor /home/cpscsc/s01rc2/lamaconv/ secp256-50cars.txt 71
+```
+
+Everything can be customised (LTL property, LTL alphabet, etc.) by editing the file Monitor.java.
 
 After running, you should see in the terminal a line being printed for every violation, including the details of the event that violated the property.   
 A final print will say how many times the property was violated while reading from the log file.
