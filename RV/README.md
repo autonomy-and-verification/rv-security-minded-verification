@@ -10,12 +10,12 @@ javac Monitor.java
 
 Run our code with:
 ```bash
-java Monitor <path_to_lamaconv> LogFile QueueLimit
+java Monitor <path_to_lamaconv> LogFile QueueLimit NumberCars
 ```
 
 Example:
 ```bash
-java Monitor /home/cpscsc/s01rc2/lamaconv/ secp256-50cars.txt 71
+java Monitor /home/cpscsc/s01rc2/lamaconv/ secp256-50cars.txt 71 50
 ```
 
 Everything can be customised (LTL property, LTL alphabet, etc.) by editing the file Monitor.java.

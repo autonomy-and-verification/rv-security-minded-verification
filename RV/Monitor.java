@@ -16,9 +16,13 @@ public class Monitor {
     private State currentState;
     private Verdict currentVerdict = Verdict.Unknown;
     private String ltl;
+    private String monitor;
     private int violations = 0;
     private int events = 0;
-    final int queueLimit = 125;
+    private static int totalviolations = 0;
+    private static int totalevents = 0;
+    private static int queueLimit = 0;
+//    final int queueLimit = 125;
 //    final int queueLimit = 71;
     public static String rv;
 
@@ -27,16 +31,26 @@ public class Monitor {
 		String ltlAlphabet = "[p,q]";
 //		String log = "secp256-2cars.txt";
 //		String log = "secp256-50cars.txt";
-		String log = "secp192-2cars.txt";
+//		String log = "secp192-2cars.txt";
 //		String log = "secp192-50cars.txt";
-		Monitor mon1 = new Monitor(args[0], ltl, ltlAlphabet);
+		queueLimit = Integer.parseInt(args[2]);
+		int numberCars = Integer.parseInt(args[3]);
+		Monitor [] monitors = new Monitor [numberCars];
+		for (int i = 0; i < numberCars; i++) {
+			monitors[i] = new Monitor(args[0], ""+i, ltl, ltlAlphabet);
+			monitors[i].verifyLog(args[1]);
+		}
+		System.out.println("The total number of events: "+totalevents);
+		System.out.println("The total number of violations: "+totalviolations);
+//		Monitor mon1 = new Monitor(args[0], ltl, ltlAlphabet);
+
         //System.out.println(mon1);
 //        System.out.println("Verdict = "+mon1.next("p"));
  //       System.out.println("Verdict = "+mon1.next("p"));
         
         //System.out.println(mon1.verifyLog("/home/cpscsc/s01rc2/lamaconv/log-pruned.txt"));
         
-        mon1.verifyLog(log);
+//        mon1.verifyLog(args[1]);
         
     }
 
@@ -64,15 +78,17 @@ public class Monitor {
 			String line;
 			while ((line = br.readLine()) != null) {
 				if (!line.isEmpty() && !line.trim().equals("") && !line.trim().equals("\n")) {
-					events++;
-					if (line.contains("pushed into the Queue")) {
+					String carId = line.substring(line.indexOf(": ")+2, line.indexOf(" : Message"));
+					if (line.contains("pushed into the Queue") && this.monitor.equals(carId)) {
+						events++;
 						String value = line.substring(line.indexOf("Queue(")+6, line.indexOf(")"));
-						String carId = line.substring(line.indexOf(": ")+2, line.indexOf(" : Message"));
 						String time = line.substring(0,line.indexOf(" : "));
 						String messageId = line.substring(line.indexOf(",")+1, line.indexOf(">"));
 						String carIdSender = line.substring(line.indexOf("Message<")+8, line.indexOf(","));
 						if (Integer.parseInt(value) > queueLimit) {
 							this.next("q");
+//							System.out.println("At time "+time+" car with ID "+carId+" violated the property, current queue of "+value+" is greater than the limit of "+queueLimit+". Message ID"+messageId+" was sent by car ID "+carIdSender);
+//							violations++;
 						}
 						else {
 							this.next("p");
@@ -82,13 +98,12 @@ public class Monitor {
 							violations++;
 						}
 					}
-					else {
-						
-					}
 				}
 			}
-			System.out.println("The total number of events is: "+events);
-			System.out.println("The total number of violations is: "+violations);
+			System.out.println("The total number of events for car with ID "+this.monitor+": "+events);
+			System.out.println("The total number of violations is for car with ID "+this.monitor+": "+violations);
+			totalevents = totalevents + events;
+			totalviolations = totalviolations + violations;
 			br.close();
 		}
 		 catch (IOException e) {
@@ -97,8 +112,9 @@ public class Monitor {
 		return this.currentVerdict;
 	}
 
-    public Monitor(String lamaconvPath, String ltl, String ltlAlphabet) throws IOException {
+    public Monitor(String lamaconvPath, String monitor, String ltl, String ltlAlphabet) throws IOException {
         this.ltl = "LTL=" + ltl.replace("and", "AND").replace("or", "OR").replace(" ", "");
+        this.monitor = monitor;
 
         String command = "java -jar " + lamaconvPath + "/rltlconv.jar " + this.ltl + ",ALPHABET=" + ltlAlphabet + " --formula --nbas --min --nfas --dfas --min --moore";
 
